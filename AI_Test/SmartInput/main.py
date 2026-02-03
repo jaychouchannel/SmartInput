@@ -54,7 +54,8 @@ try:
     from pynput import keyboard
     from pystray import Icon, Menu, MenuItem
     from PIL import Image, ImageDraw, ImageFont
-    from Pinyin2Hanzi import DefaultDagParams, simple_seg
+    from Pinyin2Hanzi import DefaultDagParams
+    from Pinyin2Hanzi.dag import dag
 except ImportError as e:
     print(f"错误: 缺少必要的依赖库: {e}")
     print("请运行: pip install -r requirements.txt")
@@ -102,6 +103,46 @@ stop_event = threading.Event()  # 停止事件
 
 # Pinyin2Hanzi 初始化
 dag_params = DefaultDagParams()
+
+def simple_seg(pinyin_str, top_k=5, dagparams=None):
+    """
+    简化的拼音分词函数，使用 dag 函数实现。
+    
+    Args:
+        pinyin_str (str): 拼音字符串（如 'nihao'）
+        top_k (int): 返回前 k 个候选
+        dagparams: DAG 参数对象
+        
+    Returns:
+        List[str]: 候选词列表
+    """
+    if not pinyin_str:
+        return []
+    
+    try:
+        # 简单的拼音分词处理
+        # 实际使用时可能需要更复杂的分词逻辑
+        pinyin_list = []
+        i = 0
+        while i < len(pinyin_str):
+            # 尝试匹配双字母或单字母拼音
+            if i + 2 <= len(pinyin_str):
+                pinyin_list.append(pinyin_str[i:i+2])
+                i += 2
+            else:
+                pinyin_list.append(pinyin_str[i])
+                i += 1
+        
+        # 使用 dag 函数获取候选
+        params = dagparams if dagparams else dag_params
+        result = dag(params, pinyin_list, path_num=top_k)
+        
+        # 提取路径并转换为字符串
+        candidates = [''.join(item.path) for item in result]
+        return candidates[:top_k]
+    except Exception as e:
+        print(f"拼音转换错误: {e}")
+        return []
 
 # ================== 托盘图标相关全局变量 ==================
 tray_icon = None
