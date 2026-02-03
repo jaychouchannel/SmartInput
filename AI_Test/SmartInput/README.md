@@ -243,7 +243,7 @@ if Shift_released:
 如有问题或建议，欢迎通过以下方式联系：
 
 - 提交 GitHub Issue
-- 发送邮件至 jaychou@example.com
+- 发送邮件至 jaymeechannel24@gmail.com
 
 ## 🎓 学习资源
 
