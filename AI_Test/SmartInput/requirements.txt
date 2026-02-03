@@ -1,0 +1,7 @@
+pyyaml==6.0.3
+pynput==1.8.1
+Pillow==12.1.0
+Pinyin2Hanzi==0.1.1
+pywin32==311
+pystray==0.19.5
+PyInstaller==6.18.0
